@@ -33,7 +33,7 @@ const App = () => {
             />
           </div>
           <ul className="list-group">
-            {tasks.map((task,index) => (
+            {tasks.length > 0 ? tasks.map((task,index) => (
               <li className="list-group-item d-flex justify-content-between">
                 {task}{" "}
                 <button onClick={()=>editArray(index)}
@@ -43,7 +43,11 @@ const App = () => {
                   X
                 </button>
               </li>
-            ))}
+            )) 
+          : 
+          <li className="list-group-item text-center ">No tasks left, add one</li>
+          }
+
           </ul>
         </div>
       </div>
