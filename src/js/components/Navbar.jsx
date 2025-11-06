@@ -1,7 +1,12 @@
 import React from "react";
 import { use } from "react";
 import { useState, useEffect } from "react";
-import { createUser, getAllUsers, getUserData, deleteUser } from "../services";
+import {
+  createUser,
+  getAllUsers,
+  getUserData,
+  deleteUser,
+} from "../userServices";
 
 const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
   const [tasks, setTasks] = useState([]);
@@ -12,8 +17,13 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
 
   const handleChange = async (event) => {
     const userName = event.target.value;
-    const fetchData = await getUserData(userName);
     createUserVariable(userName);
+    console.log(userName);
+    updateUserTasks();
+  };
+
+  const updateUserTasks = async () => {
+    const fetchData = await getUserData(user);
     setUserTasks(fetchData.todos);
   };
 
@@ -51,27 +61,26 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
     <>
       <nav className="navbar bg-success">
         <div className="d-flex justify-content-between bg-danger w-100">
-          <div className="container">
+          <div>
             <a className="navbar-brand">Todo-list</a>
           </div>
 
           <div className="d-flex">
-            <div className="mx-3 w-75">
-              <div className="input-group">
-                <input
-                  onChange={({ target }) => createUserVariable(target.value)}
-                  type="text"
-                  className="form-control"
-                  placeholder="Username"
-                />
-                <button
-                  onClick={() => createUserListFetch(user)}
-                  className="btn btn-success mx-1"
-                >
-                  <i className="fa-solid fa-plus"></i>
-                </button>
-              </div>
+            <div className="input-group">
+              <input
+                onChange={({ target }) => createUserVariable(target.value)}
+                type="text"
+                className="form-control"
+                placeholder="Username"
+              />
+              <button
+                onClick={() => createUserListFetch(user)}
+                className="btn btn-success mx-1"
+              >
+                <i className="fa-solid fa-plus"></i>
+              </button>
             </div>
+
             <select
               onChange={handleChange}
               className="form-select w-75"
@@ -82,6 +91,7 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
                 <option value={user.name}>{user.name}</option>
               ))}
             </select>
+
             <button
               onClick={() => deleteUserFromListFetch(user)}
               className="btn btn-danger mx-1"
