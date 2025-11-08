@@ -29,7 +29,6 @@ export const getUserData = async (userName) => {
   );
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     return data;
   } else {
     const message = { error: response.statusText };

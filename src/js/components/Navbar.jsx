@@ -9,42 +9,27 @@ import {
 } from "../userServices";
 
 const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
-  const [tasks, setTasks] = useState([]);
-
   const [inputValue, setInputValue] = useState("");
 
   const [users, setUsers] = useState([]);
 
+  const [userBuffer, setUserBuffer] = useState("");
+
   const handleChange = async (event) => {
     const userName = event.target.value;
     createUserVariable(userName);
-    console.log(userName);
-    updateUserTasks();
-  };
-
-  const updateUserTasks = async () => {
-    const fetchData = await getUserData(user);
-    setUserTasks(fetchData.todos);
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && inputValue.trim() !== "") {
-      console.log(user);
-    }
-  };
-
-  const editArray = (index) => {
-    const newTasks = userTasks.filter((task) => task !== tasks[index]);
-    setUserTasks(newTasks);
   };
 
   const createUserListFetch = async (userName) => {
+    createUserVariable(userName);
     await createUser(userName);
+
     actualizarListaUsuarios();
   };
 
   const deleteUserFromListFetch = async (userName) => {
     const isDeleted = await deleteUser(userName);
+    createUserVariable("");
     actualizarListaUsuarios();
   };
 
@@ -59,42 +44,58 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
 
   return (
     <>
-      <nav className="navbar bg-success">
-        <div className="d-flex justify-content-between bg-danger w-100">
-          <div>
-            <a className="navbar-brand">Todo-list</a>
-          </div>
+      <nav className="navbar navbar-dark bg-dark shadow-sm px-3">
+        <div className="container-fluid d-flex justify-content-between align-items-center">
 
-          <div className="d-flex">
-            <div className="input-group">
+          <span className="navbar-brand fw-bold text-light mb-0">
+            <i className="fa-solid fa-list-check me-2 text-info"></i>
+            Todo-list
+          </span>
+
+
+          <div className="d-flex align-items-center gap-2">
+
+            <div
+              className="input-group input-group-sm"
+              style={{ width: "220px" }}
+            >
               <input
-                onChange={({ target }) => createUserVariable(target.value)}
+                onChange={({ target }) => setUserBuffer(target.value)}
+                value={userBuffer}
                 type="text"
-                className="form-control"
-                placeholder="Username"
+                className="form-control form-control-lg fs-5"
+                placeholder="New username"
               />
               <button
-                onClick={() => createUserListFetch(user)}
-                className="btn btn-success mx-1"
+                onClick={() => {createUserListFetch(userBuffer);setUserBuffer("")}}
+                className="btn btn-outline-success"
+                title="Add user"
               >
                 <i className="fa-solid fa-plus"></i>
               </button>
             </div>
 
+            {/* User selector */}
             <select
               onChange={handleChange}
-              className="form-select w-75"
-              aria-label="Default select example"
+              className="form-select form-select-lg"
+              style={{ width: "160px" }}
             >
-              <option defaultValue="0">Open this select menu </option>
-              {users.map((user) => (
-                <option value={user.name}>{user.name}</option>
+              <option value="" disabled selected>
+                Select user
+              </option>
+              {users.map((u) => (
+                <option key={u.name} value={u.name}>
+                  {u.name}
+                </option>
               ))}
             </select>
 
+            {/* Delete user */}
             <button
               onClick={() => deleteUserFromListFetch(user)}
-              className="btn btn-danger mx-1"
+              className="btn btn-sm btn-outline-danger"
+              title="Delete selected user"
             >
               <i className="fa-solid fa-trash"></i>
             </button>
