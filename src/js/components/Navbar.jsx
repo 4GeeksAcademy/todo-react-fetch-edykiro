@@ -44,41 +44,45 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
 
   return (
     <>
-      <nav className="navbar navbar-dark bg-dark shadow-sm px-3">
+      <nav
+        className="navbar navbar-expand shadow-lg px-4 py-3"
+        style={{
+          background: "linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%)",
+        }}
+      >
         <div className="container-fluid d-flex justify-content-between align-items-center">
-
-          <span className="navbar-brand fw-bold text-light mb-0">
+          <span className="navbar-brand fw-bold mb-0 text-light fs-4">
             <i className="fa-solid fa-list-check me-2 text-info"></i>
             Todo-list
           </span>
 
-
-          <div className="d-flex align-items-center gap-2">
-
+          <div className="d-flex align-items-center gap-3">
             <div
-              className="input-group input-group-sm"
+              className="input-group input-group-lg"
               style={{ width: "220px" }}
             >
               <input
                 onChange={({ target }) => setUserBuffer(target.value)}
                 value={userBuffer}
                 type="text"
-                className="form-control form-control-lg fs-5"
+                className="form-control form-control-lg w-100"
                 placeholder="New username"
               />
-              <button
-                onClick={() => {createUserListFetch(userBuffer);setUserBuffer("")}}
-                className="btn btn-outline-success"
-                title="Add user"
-              >
-                <i className="fa-solid fa-plus"></i>
-              </button>
             </div>
+            <button
+              onClick={() => {
+                createUserListFetch(userBuffer);
+                setUserBuffer("");
+              }}
+              className="btn btn-outline-info btn-lg px-3"
+              title="Add user"
+            >
+              <i className="fa-solid fa-plus"></i>
+            </button>
 
-            {/* User selector */}
             <select
               onChange={handleChange}
-              className="form-select form-select-lg"
+              className="form-select form-select-lg w-50"
               style={{ width: "160px" }}
             >
               <option value="" disabled selected>
@@ -90,11 +94,9 @@ const Navbar = ({ userTasks, setUserTasks, user, createUserVariable }) => {
                 </option>
               ))}
             </select>
-
-            {/* Delete user */}
             <button
               onClick={() => deleteUserFromListFetch(user)}
-              className="btn btn-sm btn-outline-danger"
+              className="btn btn-outline-danger btn-lg px-3"
               title="Delete selected user"
             >
               <i className="fa-solid fa-trash"></i>
